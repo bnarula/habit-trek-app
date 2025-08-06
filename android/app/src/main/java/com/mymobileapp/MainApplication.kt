@@ -1,4 +1,4 @@
-package com.mymobileapp
+package com.HabitTrekApp
 
 import android.app.Application
 import com.facebook.react.PackageList
