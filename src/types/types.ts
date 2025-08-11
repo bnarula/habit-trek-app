@@ -6,7 +6,7 @@ export interface Hike {
   startDate: string; // ISO date string
   targetDate: string; // ISO date string
   targetScore: number;
-  status: "in-progress" | "completed" | "abandoned";
+  status: "DRAFT" | "ACTIVE" | "COMPLETED" | "ABANDONED";
   // Calculated properties
   totalScore: number;
   habits: HabitWithDetails[];
@@ -21,13 +21,15 @@ export interface Habit {
   icon: string;
   notes: string;
   weight: number; // multiplier for scoring impact
+  positiveScore: number; // points for completing the habit
+  negativeScore: number; // penalty for missing the habit
 }
 
 export interface DailyScoreLog {
   id: string;
   habitId: string;
   date: string; // YYYY-MM-DD format
-  score: number;
+  score: number; // 0 = missed, 1 = completed
 }
 
 export interface Milestone {
@@ -40,4 +42,16 @@ export interface Milestone {
 export interface HabitWithDetails extends Habit {
   scoreLogs: DailyScoreLog[];
   totalScore: number;
+}
+
+// For habit selection from previous hikes
+export interface HabitTemplate {
+  id: string;
+  name: string;
+  icon: string;
+  notes: string;
+  weight: number;
+  // These will be set when adding to new hike
+  positiveScore?: number;
+  negativeScore?: number;
 }

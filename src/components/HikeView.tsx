@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import type { Hike } from '../types/types';
 
 interface HikeViewProps {
@@ -20,17 +20,11 @@ const HikeView: React.FC<HikeViewProps> = ({ hike }) => {
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
   },
   card: {
-    backgroundColor: 'rgba(255,255,255,0.95)',
     borderRadius: 16,
     padding: 24,
     minWidth: 260,
