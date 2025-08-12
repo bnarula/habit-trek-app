@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import React, { useState } from "react";
+import { View, StyleSheet, Animated } from "react-native";
+import { FAB, Text, useTheme } from "react-native-paper";
 
 interface FloatingMenuProps {
   onCreateHike?: () => void;
@@ -7,24 +8,25 @@ interface FloatingMenuProps {
   onSettings?: () => void;
 }
 
-const FloatingMenu: React.FC<FloatingMenuProps> = ({ 
-  onCreateHike, 
-  onViewStats, 
-  onSettings 
+const FloatingMenu: React.FC<FloatingMenuProps> = ({
+  onCreateHike,
+  onViewStats,
+  onSettings,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [animation] = useState(new Animated.Value(0));
+  const theme = useTheme();
 
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
-    
+
     Animated.spring(animation, {
       toValue,
       useNativeDriver: true,
       tension: 100,
       friction: 8,
     }).start();
-    
+
     setIsExpanded(!isExpanded);
   };
 
@@ -39,7 +41,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
       {
         scale: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, 1],
+          outputRange: [0.5, 1],
         }),
       },
     ],
@@ -51,7 +53,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
       {
         rotate: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: ['0deg', '45deg'],
+          outputRange: ["0deg", "45deg"],
         }),
       },
     ],
@@ -59,42 +61,53 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* Menu Items */}
+      {/* Settings */}
       <Animated.View style={[styles.menuItem, menuItemStyle(2)]}>
-        <TouchableOpacity 
-          style={[styles.menuButton, styles.settingsButton]} 
+        <FAB
+          icon="cog"
+          color="#fff"
+          style={{ backgroundColor: theme.colors.secondary }}
           onPress={onSettings}
-        >
-          <Text style={styles.menuButtonText}>⚙️</Text>
-        </TouchableOpacity>
-        <Text style={styles.menuLabel}>Settings</Text>
+        />
+        <Text style={[styles.menuLabel, { color: theme.colors.secondary }]}>
+          Settings
+        </Text>
       </Animated.View>
 
+      {/* Stats */}
       <Animated.View style={[styles.menuItem, menuItemStyle(1)]}>
-        <TouchableOpacity 
-          style={[styles.menuButton, styles.statsButton]} 
+        <FAB
+          icon="chart-bar"
+          color="#fff"
+          style={{ backgroundColor: theme.colors.primary }}
           onPress={onViewStats}
-        >
-          <Text style={styles.menuButtonText}>📊</Text>
-        </TouchableOpacity>
-        <Text style={styles.menuLabel}>Stats</Text>
+        />
+        <Text style={[styles.menuLabel, { color: theme.colors.primary }]}>
+          Stats
+        </Text>
       </Animated.View>
 
+      {/* New Hike */}
       <Animated.View style={[styles.menuItem, menuItemStyle(0)]}>
-        <TouchableOpacity 
-          style={[styles.menuButton, styles.createButton]} 
+        <FAB
+          icon="hiking"
+          color="#fff"
+          style={{ backgroundColor: theme.colors.tertiary }}
           onPress={onCreateHike}
-        >
-          <Text style={styles.menuButtonText}>🥾</Text>
-        </TouchableOpacity>
-        <Text style={styles.menuLabel}>New Hike</Text>
+        />
+        <Text style={[styles.menuLabel, { color: theme.colors.tertiary }]}>
+          New Hike
+        </Text>
       </Animated.View>
 
-      {/* Main Toggle Button */}
+      {/* Main Toggle */}
       <Animated.View style={mainButtonRotation}>
-        <TouchableOpacity style={styles.mainButton} onPress={toggleMenu}>
-          <Text style={styles.mainButtonText}>+</Text>
-        </TouchableOpacity>
+        <FAB
+          icon={isExpanded ? "close" : "plus"}
+          color="#fff"
+          style={{ backgroundColor: theme.colors.primary }}
+          onPress={toggleMenu}
+        />
       </Animated.View>
     </View>
   );
@@ -102,69 +115,18 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     right: 30,
-    alignItems: 'center',
-  },
-  mainButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-  },
-  mainButtonText: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
+    alignItems: "center",
   },
   menuItem: {
-    position: 'absolute',
-    alignItems: 'center',
-    bottom: 0,
-  },
-  menuButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  createButton: {
-    backgroundColor: '#FF9800',
-  },
-  statsButton: {
-    backgroundColor: '#2196F3',
-  },
-  settingsButton: {
-    backgroundColor: '#9C27B0',
-  },
-  menuButtonText: {
-    fontSize: 20,
+    position: "absolute",
+    alignItems: "center",
   },
   menuLabel: {
-    marginTop: 5,
     fontSize: 12,
-    color: '#666',
-    fontWeight: '500',
+    marginTop: 4,
   },
 });
 

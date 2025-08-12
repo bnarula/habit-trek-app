@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 import TrekBackground from '../components/TrekBackground';
 import HikeView from '../components/HikeView';
 import Header from '../components/Header';
@@ -42,9 +43,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           ) : (
             <View style={styles.centeredOverlay}>
               <Button 
-                title="Start a New Hike" 
+                mode="contained"
                 onPress={() => navigation.navigate('CreateHike', { mode: 'create' })} 
-              />
+              >Start a New Hike</Button>
             </View>
           )}
         </View>
